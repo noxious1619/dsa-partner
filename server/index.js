@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { main } from "./gemini.js";
+import askRoute from "./routes/askRoute.js";
 
 dotenv.config();
 
@@ -13,21 +14,7 @@ app.get("/", (req, res) => {
 });
 
 // Gemini test route
-app.post("/api/ask", async (req, res) => {
-  const { prompt } = req.body;
-  if (!prompt) {
-    return res.status(400).json({ error: "Prompt is required" });
-  }
-
-  try {
-    const aiResponse = await main(prompt);
-    res.status(200).json({ response: aiResponse });
-  }catch (error) {
-    console.error("Error from Gemini API:", error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-
-});
+app.use('/api', askRoute);
 
 app.listen(PORT, () => {
   console.log(`✅ Server listening on port ${PORT}`);
