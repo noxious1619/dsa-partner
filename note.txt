@@ -1,0 +1,7 @@
+dsa-partner/
+└── server/
+    ├── index.js          // Main Express file
+    ├── routes/           // Optional folder for API routes
+    ├── controllers/      // Optional logic folder
+    ├── package.json
+    └── .env              // For API keys (Gemini etc.)
