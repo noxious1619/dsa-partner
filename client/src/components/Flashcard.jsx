@@ -1,42 +1,12 @@
-import { useState } from "react";
-
-const Flashcard = () => {
-  const [question, setQuestion] = useState("");
-  const [response, setResponse] = useState("");
-  const [activeType, setActiveType] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleAsk = async (type) => {
-    if (!question) return;
-
-    setLoading(true);
-    setActiveType(type);
-    setResponse(""); // Clear previous response while loading
-
-    try {
-      const res = await fetch(`http://localhost:5000/api/ask/${type}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: question }),
-      });
-
-      const data = await res.json();
-      setResponse(data.response || "No response.");
-    } catch (err) {
-      setResponse("Something went wrong while fetching.");
-    } finally {
-      setLoading(false);
-    }
-  };
+const Flashcard = ({ loading, response }) => {
 
   return (
-    <div className="flashcard-wrapper">
-      
-      {activeType && (
-        <div className="flashcard">
-          <h3>{activeType.charAt(0).toUpperCase() + activeType.slice(1)}</h3>
-          {loading ? <p>Loading...</p> : <pre>{response}</pre>}
-        </div>
+    <div className="w-full max-w-xl mx-auto mt-6 p-6 bg-white shadow-lg rounded-2xl border border-gray-200 transition-all duration-300 ease-in-out">
+
+      {loading ? (
+        <p className="text-gray-500 animate-pulse">Loading...</p>
+      ) : (
+        <pre className="whitespace-pre-wrap text-gray-800 font-mono text-sm">{response}</pre>
       )}
     </div>
   );

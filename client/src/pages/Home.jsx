@@ -1,4 +1,9 @@
 import { useState } from "react";
+import QuestionInput from "../components/QuestionInput";
+import Flashcard from "../components/Flashcard"; 
+import Navbar from "../components/Navbar";
+
+
 
 const Home = () => {
   const [input, setInput] = useState("");
@@ -19,23 +24,19 @@ const Home = () => {
       const data = await res.json();
       setResponse(data.response);
     } catch (err) {
-      setResponse("⚠️ Something went wrong.");
+      setResponse("⚠️ Something went wrong while fetching API.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen p-4 flex flex-col items-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-      <h1 className="text-3xl font-bold mb-6">🧠 DSA Partner</h1>
 
-      <textarea
-        rows="4"
-        placeholder="Paste your DSA question or title here..."
-        className="w-full max-w-xl p-3 rounded border"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
+    <div className="min-h-screen p-4 flex flex-col items-center bg-gray-100 dark:bg-gray-400 text-gray-900 dark:text-white">
+
+      <Navbar />
+
+      <QuestionInput input={input} setInput={setInput} />
 
       <div className="flex gap-4 mt-4">
         <button onClick={() => handleClick("explanation")} className="btn">
@@ -49,15 +50,11 @@ const Home = () => {
         </button>
       </div>
 
-      <div className="mt-6 w-full max-w-xl">
-        {loading ? (
-          <p>Loading...</p>
-        ) : response ? (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            {response}
-          </div>
-        ) : null}
-      </div>
+      <Flashcard
+        loading={loading}
+        response={response}
+      />
+
     </div>
   );
 };
